@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "746684880939",
+    "project_id": "socialmediatest-3affc",
+    "storage_bucket": "socialmediatest-3affc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:746684880939:android:e0edc0bc4bbc9f734ef26e",
+        "android_client_info": {
+          "package_name": "com.example.social_media_test"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA2hbfGzITX-Yz6Wx_zMiKl5MCJxQf1RLE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
