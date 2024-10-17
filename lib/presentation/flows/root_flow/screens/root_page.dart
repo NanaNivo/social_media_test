@@ -23,25 +23,19 @@ class NavigationController {
       title: 'home',
       enabledIcon: ImagesKeys.home,
       disabledIcon: ImagesKeys.home,
-      page: Container(),
+
     ),
     NavigationItem(
       title: 'category',
-      enabledIcon: ImagesKeys.category2,
-      disabledIcon: ImagesKeys.category2,
-      page: Container(),
-    ),
-    NavigationItem(
-      title: 'cart',
-      enabledIcon: ImagesKeys.cart,
-      disabledIcon: ImagesKeys.cart,
-      page: Container(),
+      enabledIcon: ImagesKeys.location,
+      disabledIcon: ImagesKeys.location,
+
     ),
     NavigationItem(
       title: 'user',
       enabledIcon: ImagesKeys.user,
       disabledIcon: ImagesKeys.user,
-      page: Container(),
+
     ),
 
   ];
@@ -64,21 +58,16 @@ class NavigationController {
                   padding: EdgeInsetsDirectional.only(top: 5.h),
                   child: Container(
                     //width: 300,
-                  height: 30.h,
-                 //  decoration: BoxDecoration(
-                 //      image:DecorationImage(
-                 //          image: AssetImage(item.disabledIcon,),
-                 //          fit:BoxFit.contain
-                 //      )
-                 // // child: Image.asset(  item.disabledIcon,width: 70.w,color:Colors.white ,height: 80.h,
-                 //    ),
-                    child: SvgPicture.asset(item.disabledIcon,width: 30.w),
+                  height: 50.h,
+
+
+                    child: SvgPicture.asset(item.disabledIcon,color: locator<AppThemeColors>().gray,),
                   ),
                 ),
-                Text(
-               item.title,
-                  style: TextStyle(color: locator<AppThemeColors>().white,fontSize: 20.sp,overflow:TextOverflow.fade ),
-                )
+               //  Text(
+               // item.title,
+               //    style: TextStyle(color: locator<AppThemeColors>().white,fontSize: 15.sp,overflow:TextOverflow.fade ),
+               //  )
               ],
             ),
             activeIcon: Column(
@@ -87,19 +76,20 @@ class NavigationController {
                   // color: Colors.red,
                   padding: EdgeInsetsDirectional.only(top: 6.h),
                  // width: 180.w,
-                  height: 30.h,
+                  height: 50.h,
                   // decoration: BoxDecoration(
                   //   image:DecorationImage(
                   //     image: AssetImage(item.enabledIcon)
                   //   )
                   //
                   // ),
-                  child: SvgPicture.asset(item.enabledIcon,color: locator<AppThemeColors>().dark,width: 30.w,),
+                  child:
+                  SvgPicture.asset(item.enabledIcon,color: locator<AppThemeColors>().dark,width: 50.w,),
                 ),
-                Text(
-                  item.title,
-                  style: TextStyle(color: locator<AppThemeColors>().white,fontSize: 20.sp,fontWeight: FontWeight.bold),
-                )
+                // Text(
+                //   item.title,
+                //   style: TextStyle(color: locator<AppThemeColors>().white,fontSize: 20.sp,fontWeight: FontWeight.bold),
+                // )
               ],
             ),
             label: '',
@@ -107,7 +97,7 @@ class NavigationController {
           ))
           .toList();
 
-  Widget get currentPage => currentNavigationItem.page;
+  //Widget get currentPage => currentNavigationItem.page;
 
   void navigateToPage(int index) {
     _currentIndex = index;
@@ -118,12 +108,12 @@ class NavigationItem {
   final String title;
   final String enabledIcon;
   final String disabledIcon;
-  final Widget page;
+ // final Widget page;
 
   NavigationItem({required this.title,
     required this.enabledIcon,
     required this.disabledIcon,
-    required this.page});
+   });
 }
 //
 // class RootPageWidget extends StatefulWidget {
@@ -199,35 +189,66 @@ class _RootPageWidgetState extends State<RootPageWidget> {
       builder: (context, state) {
 
         return Scaffold(
-          body: widget.navigationShell,
-          bottomNavigationBar: Theme(
-            data: Theme.of(context).copyWith(
-              canvasColor: locator<AppThemeColors>().primaryColor,
-            ),
-            child: BottomNavigationBar(
-              selectedFontSize: 0,
-              unselectedFontSize: 0,
-              //  type: BottomNavigationBarType.shifting,
-              items: navigationController.bottomNavigationBarItems,
-              //  iconSize: 24,
-              currentIndex: bloc.state.currentIndex,
-              onTap: (index) {
-                bloc.navigate(index);
-                //  navigationController.navigateToPage(index);
-                print("index 3 navigate button${index}");
-                if (index == 0) {
-                  context.go(RoutesPath.rootPage, extra: {'index': 0});
-                } else if (index == 1) {
-                //  context.go(RoutesPath.sevices, extra: {'index': 1});
-                  context.go(RoutesPath.category, extra: {'index': 1});
-                } else if (index == 2) {
-                  context.go(RoutesPath.cartPage, extra: {'index': 2});
-                } else if (index == 3) {
-                  context.go(RoutesPath.userPage, extra: {'index': 3});
-                } else if (index == 4) {
+          backgroundColor: locator<AppThemeColors>().primaryColor,
+          extendBody: true,
 
-                }
-              },
+          appBar: AppBar(
+            backgroundColor: locator<AppThemeColors>().primaryColor,
+            toolbarHeight: 20.h,
+          ),
+          body: widget.navigationShell,
+          bottomNavigationBar: Container(
+            height: 90.h,
+
+            decoration: BoxDecoration(
+              //color: locator<AppThemeColors>().transparent,
+             // color: locator<AppThemeColors>().dark, // Set background color
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(50.r),
+                topRight: Radius.circular(50.r),
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: locator<AppThemeColors>().gray.withOpacity(0.3),
+                  blurRadius: 1,
+                  spreadRadius: 2,
+                ),
+              ],
+            ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(50.r),
+                topRight: Radius.circular(50.r),
+              ),
+              child: BottomNavigationBar(
+
+                selectedFontSize: 0,
+                elevation: 3,
+                backgroundColor: locator<AppThemeColors>().white,
+                unselectedFontSize: 0,
+                //  type: BottomNavigationBarType.shifting,
+                items: navigationController.bottomNavigationBarItems,
+                //  iconSize: 24,
+                currentIndex: bloc.state.currentIndex,
+                onTap: (index) {
+                  bloc.navigate(index);
+                  //  navigationController.navigateToPage(index);
+                  print("index 3 navigate button${index}");
+                  if (index == 0) {
+                    context.go(RoutesPath.rootPage, extra: {'index': 0});
+                  } else if (index == 1) {
+                  //  context.go(RoutesPath.sevices, extra: {'index': 1});
+                    context.go(RoutesPath.locationPage, extra: {'index': 1});
+                  } else if (index == 2) {
+                    context.go(RoutesPath.userPage, extra: {'index': 2});
+                  }
+                  // } else if (index == 3) {
+                  //   context.go(RoutesPath.userPage, extra: {'index': 3});
+                  // } else if (index == 4) {
+                  //
+                  // }
+                },
+              ),
             ),
           ),
         );

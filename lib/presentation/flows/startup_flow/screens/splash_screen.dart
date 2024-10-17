@@ -45,8 +45,8 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
           child: Column(
             children: [
               CustomHeader(
-                start: locator<AppThemeColors>().gradientStarts,
-                end: locator<AppThemeColors>().gradientEnds,
+                start: locator<AppThemeColors>().primaryColor,
+                end: locator<AppThemeColors>().primaryColor.withOpacity(0.8),
                 additionalHeight: 20,
                 bottom: SizedBox(
                   height: ScreensHelper.of(context).fromHeight(30),

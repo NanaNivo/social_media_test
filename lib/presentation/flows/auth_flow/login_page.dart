@@ -43,113 +43,119 @@ class _LogInPageState extends State<LogInPage> {
       child: Scaffold(
         body: Padding(
           padding: EdgeInsetsDirectional.symmetric(horizontal: 30.w),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Center(
-                child: Image.asset(ImagesKeys.userImage,color: locator<AppThemeColors>().primaryColor,width: 110.w,),
-              ),
-              ScreenUtil().setVerticalSpacing(20),
-              Center(
-                  child: TextTranslation(
-                'Welcome Back',
-                withTranslation: false,
-              )),
-              Row(
+          child: SingleChildScrollView(
+            child: SizedBox(
+              height: ScreenUtil().screenHeight,
+              child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
+                  Center(
+                    child: Image.asset(ImagesKeys.userImage,color: locator<AppThemeColors>().primaryColor,width: 110.w,),
+                  ),
+                  ScreenUtil().setVerticalSpacing(20),
+                  Center(
+                      child: TextTranslation(
+                    'Welcome Back',
+                    withTranslation: false,
+                  )),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      TextTranslation(
+                        'Dont have an account',
+                        withTranslation: false,
+                      ),
+                      TextButton(
+                          onPressed: () {
+                            context.push(RoutesPath.register);
+                          },
+                          child: Text('Create Account'))
+                    ],
+                  ),
+                  ScreenUtil().setVerticalSpacing(20),
                   TextTranslation(
-                    'Dont have an account',
+                    'Email Address',
                     withTranslation: false,
                   ),
-                  TextButton(
-                      onPressed: () {
-                        context.push(RoutesPath.register);
+                  ScreenUtil().setVerticalSpacing(20),
+                  CustomTextField(
+                    hintText: "Email",
+                    controller: emailController,
+                    colorBorder: locator<AppThemeColors>().primaryColor,
+                    raduceBorder: 12.r,
+                    widthBorder: 1.5,
+                    onvalidator: (value) {
+                      return BaseValidator.validateValue(
+                          value, [EmailValidator(), RequiredValidator()], true);
+                    },
+                  ),
+                  ScreenUtil().setVerticalSpacing(20),
+                  TextTranslation(
+                    'Password',
+                    withTranslation: false,
+                  ),
+                  ScreenUtil().setVerticalSpacing(20),
+                  CustomTextField(
+                    hintText: "Password",
+                    controller: passwordController,
+                    colorBorder: locator<AppThemeColors>().primaryColor,
+                    raduceBorder: 12.r,
+                    widthBorder: 1.5,
+                    onvalidator: (value) {
+                      return BaseValidator.validateValue(
+                          value,
+                          [PasswordValidator(minLength: 8), RequiredValidator()],
+                          true);
+                    },
+                  ),
+                  ScreenUtil().setVerticalSpacing(50),
+                  Center(
+                    child: BlocConsumer<AuthBloc, AuthState>(
+                      bloc: authBloc,
+                      listener: (context, state) {
+                        if(state.loginStatus==LoginStatus.error)
+                          {
+                            print("error login${state.errorLogin}");
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              content:  Text(state.errorLogin),
+                              duration: const Duration(seconds: 1),
+                              // action: SnackBarAction(
+                              //   label: 'ACTION',
+                              //   onPressed: () { },
+                              // ),
+                            ));
+                          }
+                        else
+                           if(state.loginStatus==LoginStatus.success)
+                             {
+                               print("success login");
+                               context.go(RoutesPath.rootPage);
+
+                             }
                       },
-                      child: Text('Create Account'))
+                      builder: (context, state) {
+                        return state.loginStatus == LoginStatus.loading
+                            ? CircularProgressIndicator()
+                            : PrimaryButton(
+                                onPress: () {
+                                  authBloc.add(LogInEvent(
+                                      email: emailController.text,
+                                      password: passwordController.text));
+                                },
+                                width: 200.w,
+                                hight: 50.h,
+                                textStyle: AppTheme.appTextTheme(
+                                        locator<AppThemeColors>().white)
+                                    .titleMedium,
+                                text: 'Sign in',
+                              );
+                      },
+                    ),
+                  )
                 ],
               ),
-              ScreenUtil().setVerticalSpacing(20),
-              TextTranslation(
-                'Email Address',
-                withTranslation: false,
-              ),
-              ScreenUtil().setVerticalSpacing(20),
-              CustomTextField(
-                hintText: "Email",
-                controller: emailController,
-                colorBorder: locator<AppThemeColors>().primaryColor,
-                raduceBorder: 12.r,
-                widthBorder: 1.5,
-                onvalidator: (value) {
-                  return BaseValidator.validateValue(
-                      value, [EmailValidator(), RequiredValidator()], true);
-                },
-              ),
-              ScreenUtil().setVerticalSpacing(20),
-              TextTranslation(
-                'Password',
-                withTranslation: false,
-              ),
-              ScreenUtil().setVerticalSpacing(20),
-              CustomTextField(
-                hintText: "Password",
-                controller: passwordController,
-                colorBorder: locator<AppThemeColors>().primaryColor,
-                raduceBorder: 12.r,
-                widthBorder: 1.5,
-                onvalidator: (value) {
-                  return BaseValidator.validateValue(
-                      value,
-                      [PasswordValidator(minLength: 8), RequiredValidator()],
-                      true);
-                },
-              ),
-              ScreenUtil().setVerticalSpacing(50),
-              Center(
-                child: BlocConsumer<AuthBloc, AuthState>(
-                  bloc: authBloc,
-                  listener: (context, state) {
-                    if(state.loginStatus==LoginStatus.error)
-                      {
-                        print("error login${state.errorLogin}");
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          content:  Text(state.errorLogin),
-                          duration: const Duration(seconds: 1),
-                          // action: SnackBarAction(
-                          //   label: 'ACTION',
-                          //   onPressed: () { },
-                          // ),
-                        ));
-                      }
-                    else
-                       if(state.loginStatus==LoginStatus.success)
-                         {
-                           print("success login");
-
-                         }
-                  },
-                  builder: (context, state) {
-                    return state.loginStatus == LoginStatus.loading
-                        ? CircularProgressIndicator()
-                        : PrimaryButton(
-                            onPress: () {
-                              authBloc.add(LogInEvent(
-                                  email: emailController.text,
-                                  password: passwordController.text));
-                            },
-                            width: 200.w,
-                            hight: 50.h,
-                            textStyle: AppTheme.appTextTheme(
-                                    locator<AppThemeColors>().white)
-                                .titleMedium,
-                            text: 'Sign in',
-                          );
-                  },
-                ),
-              )
-            ],
+            ),
           ),
         ),
       ),

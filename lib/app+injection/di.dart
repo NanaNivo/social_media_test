@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:social_media_test/core/api/auth_interceptor.dart';
@@ -24,6 +25,7 @@ import 'package:social_media_test/domain/usecases/post_usecases.dart';
 import 'package:social_media_test/presentation/custom_widgets/infinite_list_view/entity/post_wrappers.dart';
 import 'package:social_media_test/presentation/fa%C3%A7ades/app_facade.dart';
 import 'package:social_media_test/presentation/flows/auth_flow/auth_bloc/auth_bloc.dart';
+import 'package:social_media_test/presentation/flows/post_flow/bloc/post_bloc.dart';
 import 'package:social_media_test/presentation/flows/root_flow/bloc/root_cubit.dart';
 
 
@@ -89,6 +91,15 @@ Future<void> setUpLocator() async {
 
   locator.registerLazySingleton<AuthDataSource>(() => AuthDataSourceImpl());
   locator.registerLazySingleton<FirebaseAuth>(() =>FirebaseAuth.instance);
+  locator.registerLazySingleton<FirebaseDatabase>(() =>FirebaseDatabase.instance);
+
+
+  locator.registerLazySingleton<PostRepository>(() =>PostRepositoryImpl(firebaseDatabase: locator<FirebaseDatabase>()));
+  locator.registerLazySingleton<GetPostUseCase>(() =>GetPostUseCase(postRepository: locator<PostRepository>()));
+  locator.registerLazySingleton<GetCommentUseCase>(() =>GetCommentUseCase(postRepository: locator<PostRepository>()));
+  locator.registerLazySingleton<GetStoryUseCase>(() =>GetStoryUseCase(postRepository: locator<PostRepository>()));
+  locator.registerLazySingleton<PostBloc>(() =>PostBloc(getPostUseCase: locator<GetPostUseCase>(),getCommentUseCase: locator<GetCommentUseCase>(),getStoryUseCase: locator<GetStoryUseCase>()));
+
   locator.registerLazySingleton<AuthRepository>(() => AuthRepositoryImpl(auth:locator<FirebaseAuth>(),sessionManager: locator<SessionManager>()));
   locator.registerLazySingleton<LoginUseCase>(() => LoginUseCase(authRepository: locator<AuthRepository>()));
   locator.registerLazySingleton<AuthBloc>(() => AuthBloc(locator<LoginUseCase>()));

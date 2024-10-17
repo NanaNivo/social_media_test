@@ -6,19 +6,23 @@ class ImagePlaceHolder extends StatelessWidget {
   double? width;
   BoxFit? fit;
   Color? color;
-   ImagePlaceHolder({super.key,this.placehlder,this.fit,this.color,this.width});
+  double? raduis;
+   ImagePlaceHolder({super.key,this.placehlder,this.fit,this.color,this.width,this.raduis});
 
   @override
   Widget build(BuildContext context) {
     return Container(
        decoration: BoxDecoration(
-           borderRadius: BorderRadiusDirectional.circular(12.w),),
-      child: Image.asset(
-        placehlder??'lib/assets/images/png/Placeholder.png',
-        fit: fit??BoxFit.cover,
-        color: color,
-        width: width,
-      ),
+       //  shape: BoxShape.circle,
+           borderRadius: BorderRadiusDirectional.circular(raduis??12.r),
+         image: DecorationImage(
+           image: AssetImage( placehlder??'lib/assets/images/png/Placeholder.png'),
+             fit: fit??BoxFit.cover,
+             // color: color,
+             // width: width
+         )
+       ),
+
     );
   }
 }

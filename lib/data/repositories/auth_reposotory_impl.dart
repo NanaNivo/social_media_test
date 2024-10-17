@@ -24,17 +24,18 @@ class AuthRepositoryImpl extends AuthRepository {
   Future<Result<BaseError, bool>> loginRepo(LoginRequest loginRequest) async {
     // final result = await authDataSource.loginSource(loginRequest);
     try {
-      final result = await auth
-          .createUserWithEmailAndPassword( // instantiated earlier on: final _firebaseAuth = FirebaseAuth.instance;
+      final result =  await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: loginRequest.email,
         password: loginRequest.password,
       );
+      print("result in repo${result}");
       if (result.user != null) {
         final data = await result.user!.getIdToken();
         if (data != null) {
           sessionManager.persistToken(data);
+          return Result(data: true);
         }
-        return Result(data: true);
+
       }
       String message = 'no data';
      return Result(error: StringError(error:message));
@@ -42,16 +43,16 @@ class AuthRepositoryImpl extends AuthRepository {
 
     }
     on FirebaseAuthException catch (e) {
-      if (e.code == 'weak-password') {
-       String message = 'The password provided is too weak.';
+      if (e.code == 'INVALID_LOGIN_CREDENTIALS') {
+        String   message = 'Invalid login credentials.';
      return  Result(error: StringError(error:message));
-      } else if (e.code == 'email-already-in-use') {
-      String  message = 'An account already exists with that email.';
+      } else
+        {
+      String  message = e.code;
       return  Result(error: StringError(error:message));
       }
     }
-    String message = 'no data';
-    return Result(error: StringError(error:message));
+
   }
   //
 

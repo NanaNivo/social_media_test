@@ -1,25 +1,61 @@
 
+import 'package:social_media_test/data/models/post_model.dart';
 import 'package:social_media_test/data/models/user.dart';
 
-class TaskEvent
+class PostEvent
 {
 
 }
-class AddTaskEvent extends TaskEvent
+class GetPostEvent extends PostEvent
 {
- final User user;
- AddTaskEvent({required this.user});
 
 }
-class DeletTaskEvent extends TaskEvent
+class FillPostList extends PostEvent
 {
-  final int id;
-  DeletTaskEvent({required this.id});
+   Post post;
+   FillPostList({required this.post});
 }
-class UpdateTaskEvent extends TaskEvent
+
+
+class FillStoryList extends PostEvent
 {
-  final User user;
-  UpdateTaskEvent({required this.user});
+   Story story;
+   FillStoryList({required this.story});
 }
+
+class FillCommentList extends PostEvent
+{
+   Comment comment;
+   FillCommentList({required this.comment});
+}
+class GetComment extends PostEvent
+{
+   int postId;
+   GetComment({required this.postId});
+}
+class GetStory extends PostEvent
+{
+
+}
+
+
+
+
+// class AddTaskEvent extends TaskEvent
+// {
+//  final User user;
+//  AddTaskEvent({required this.user});
+//
+// }
+// class DeletTaskEvent extends TaskEvent
+// {
+//   final int id;
+//   DeletTaskEvent({required this.id});
+// }
+// class UpdateTaskEvent extends TaskEvent
+// {
+//   final User user;
+//   UpdateTaskEvent({required this.user});
+// }
 
 

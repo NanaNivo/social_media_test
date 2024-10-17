@@ -65,10 +65,18 @@ dependencies:
   loading_animation_widget: ^1.2.0+4
   dots_indicator: 3.0.0
   firebase_auth: 4.17.8
+  story_view:
+  flutter_markdown: 0.6.20
+  firebase_database:  10.4.9
+  hydrated_bloc: 9.1.5
+  path_provider: 2.1.4
+  json_annotation: ^4.9.0
+  connectivity_plus: ^2.3.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -76,6 +84,9 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^2.0.0
+  build_runner: ^2.4.7
+  json_serializable: ^6.7.1
+
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -95,6 +106,8 @@ flutter:
   assets:
     - lib/assets/images/png/
     - lib/assets/lang/
+    - lib/assets/images/svg/
+    - lib/assets/images/svg/Tabs/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

@@ -47,16 +47,18 @@ class CachImage extends StatelessWidget {
 
 
       },
-      placeholder: (context, url) =>  ImagePlaceHolder(width: width),
+      placeholder: (context, url) =>  ImagePlaceHolder(width: width,raduis: raduce,),
       errorWidget: (context, url, error) => Container(
 
         height: hight,
         width: width,
+
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(raduce),
          // color: Colors.black,
           image: DecorationImage(
-            image: AssetImage('lib/assets/images/png/Placeholder.png'),
+
+            image: AssetImage('lib/assets/images/png/user.png',),
             fit: BoxFit.fill,
           ),
         ),

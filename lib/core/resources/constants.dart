@@ -81,6 +81,8 @@ class ImagesKeys {
 
   static String get home => "lib/assets/images/svg/Tabs/home.svg";
 
+  static String get location => "lib/assets/images/svg/Tabs/location.svg";
+
   static String get cart => "lib/assets/images/svg/cart.svg";
 
   static String get category => "lib/assets/images/svg/Tabs/search.svg";

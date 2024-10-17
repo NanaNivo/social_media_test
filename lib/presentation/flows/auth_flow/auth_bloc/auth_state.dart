@@ -12,7 +12,7 @@ class AuthState extends Equatable{
     LoginStatus? loginStatus,
     String? errorLogin,
 }){
-    return AuthState(loginStatus:loginStatus??this.loginStatus,errorLogin: errorLogin??this.errorLogin );
+    return AuthState(loginStatus:loginStatus??LoginStatus.init,errorLogin: errorLogin??this.errorLogin );
 }
 
   @override

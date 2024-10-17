@@ -4,10 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:social_media_test/presentation/flows/auth_flow/login_page.dart';
 import 'package:social_media_test/presentation/flows/auth_flow/register_page.dart';
+import 'package:social_media_test/presentation/flows/post_flow/screen/story_viewer_screen.dart';
 
 import 'package:social_media_test/presentation/flows/root_flow/screens/root_page.dart';
 import 'package:social_media_test/presentation/flows/startup_flow/screens/splash_screen.dart';
-import 'package:social_media_test/presentation/flows/post_flow/screen/post_screeen.dart';
+import 'package:social_media_test/presentation/flows/post_flow/screen/home_screeen.dart';
 
 import '../../app+injection/app.dart';
 
@@ -26,7 +27,8 @@ class RoutesPath {
   static String get welcomePage => '/welcome';
 
   static String get loginPage => '/auth';
-  static String get postPage=>'/post';
+
+  static String get postPage => '/post';
 
   static String get forgetPasswordPage => '$loginPage/forget-password';
 
@@ -40,18 +42,21 @@ class RoutesPath {
       '$resetPasswordPage/change-success';
 
   static String get rootPage => '/root';
+
+  static String get storyPage => '/story';
+  static String get locationPage => '/location';
+
   static String get cartPage => '/cart';
 
   static String get userPage => '/user';
 
-
-
   static String get home2 => '$rootPage/home2';
 
   static String get category => '/category';
-  static String get products => '$category/products';
-  static String get productDetails => '$products/product-details';
 
+  static String get products => '$category/products';
+
+  static String get productDetails => '$products/product-details';
 
   static String get categoryDetailPage => '/category/detail';
 
@@ -65,7 +70,7 @@ class RoutesPath {
 
   static String get confirmDetails => '$deliveryStores/confirm-details';
 
- // static String get products => '/products';
+  // static String get products => '/products';
 
   static String get wishList => '/wishlist';
 
@@ -120,6 +125,9 @@ final List<RouteBase> routes = [
             'splash splash splash splash ${locator<AppBloc>().state.isFirstTime} ${goState.location == RoutesPath.splashScreen} ${locator<AppBloc>().state.appStatus} ${goState.matchedLocation}');
 
         return RoutesPath.loginPage;
+      } else if (locator<AppBloc>().state.appStatus == Status.authorized &&
+          goState.location == RoutesPath.splashScreen) {
+        return RoutesPath.rootPage;
       }
       return null;
     },
@@ -143,26 +151,24 @@ final List<RouteBase> routes = [
             name: 'RegisterScreen',
             path: 'register',
             builder: (context, state) => RegisterPage(),
-            routes: [
-
-            ]),
+            routes: []),
       ]),
-  GoRoute(
-      parentNavigatorKey: rootNavigatorKey,
-      name: 'taskScreen',
-      path: '/task',
-      builder: (context, state) => TaskScreen(),
-      redirect: (context, goRouterState) {
-
-        if (locator<AppBloc>().state.appStatus == Status.authorized &&
-            goRouterState.path == RoutesPath.loginPage) {
-          //return RoutesPath.rootPage;
-        }
-        return null;
-      },
-      routes: [
-
-      ]),
+  // GoRoute(
+  //     parentNavigatorKey: rootNavigatorKey,
+  //     name: 'taskScreen',
+  //     path: '/task',
+  //     builder: (context, state) => Container(),
+  //     redirect: (context, goRouterState) {
+  //
+  //       if (locator<AppBloc>().state.appStatus == Status.authorized &&
+  //           goRouterState.path == RoutesPath.loginPage) {
+  //         //return RoutesPath.rootPage;
+  //       }
+  //       return null;
+  //     },
+  //     routes: [
+  //
+  //     ]),
   ShellRoute(
     builder: (context, state, child) {
       Map<String, dynamic>? extra = state.extra as Map<String, dynamic>?;
@@ -175,45 +181,16 @@ final List<RouteBase> routes = [
       GoRoute(
           path: '/root',
           builder: (context, state) {
-            return Container();
+            return HomeScreen();
           },
           routes: [
-
-          ],
-          redirect: (context, goRouterState) {
-            print('dddddddddddHome${goRouterState}');
-            if (locator<AppBloc>().state.appStatus == Status.unauthorized) {
-              //  return RoutesPath.loginPage;
-            }
-            return null;
-          }),
-      GoRoute(
-          path: '/category',
-          builder: (context, state) {
-          //  return CategoryPage();
-            return Container();
-          },
-          routes: [
-            GoRoute(path: 'products',
-              builder: (context,state){
+            GoRoute(
+              path: 'story',
+              builder: (context, state) {
                 Map<String, dynamic>? extra = state.extra as Map<String, dynamic>?;
-              //  return ProductPage(categoryId: extra!['id'],);
-                return Container();
-
+                return StoryViewer(userImages: extra!['userImages'],index:extra['index']);
               },
-                routes: [
-                  GoRoute(
-                    path: 'product-details',
-                    builder: (context, state) {
-                      Map<String, dynamic>? extra = state.extra as Map<String, dynamic>?;
-                     // return ProductDetieles(slug: extra!['slug'],);
-                      return Container();
-
-                    },
-                  )
-                ],
-              ),
-
+            )
           ],
           redirect: (context, goRouterState) {
             print('dddddddddddHome${goRouterState}');
@@ -223,12 +200,14 @@ final List<RouteBase> routes = [
             return null;
           }),
       GoRoute(
-          path: '/cart',
+          path: '/location',
           builder: (context, state) {
-         //   return CartPage();
+            //  return CategoryPage();
             return Container();
           },
-          routes: [],
+          routes: [
+
+          ],
           redirect: (context, goRouterState) {
             print('dddddddddddHome${goRouterState}');
             if (locator<AppBloc>().state.appStatus == Status.unauthorized) {
@@ -236,10 +215,11 @@ final List<RouteBase> routes = [
             }
             return null;
           }),
+
       GoRoute(
           path: '/user',
           builder: (context, state) {
-            return LogInPage();
+            return Container();
           },
           routes: [],
           redirect: (context, goRouterState) {
@@ -250,14 +230,16 @@ final List<RouteBase> routes = [
             return null;
           }),
 
-           GoRoute(
-          path: '/user',
-          builder: (context, state) {
-          //  return ProfileScreen();
-            return Container();
-          })
     ],
   ),
+
+  GoRoute(
+    path: '/story',
+    builder: (context, state) {
+      Map<String, dynamic>? extra = state.extra as Map<String, dynamic>?;
+      return StoryViewer(userImages: extra!['userImages'],index: extra!['index'],);
+    },
+  )
 ];
 
 class GoRouterRefreshStream extends ChangeNotifier {

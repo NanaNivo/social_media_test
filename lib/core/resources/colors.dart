@@ -51,7 +51,8 @@ abstract class AppThemeColors {
 
 class LightModeColors extends AppThemeColors {
   @override
-  Color get primaryColor => const Color(0xffd60764);
+  Color get primaryColor => const Color(0xff2D2D2D);
+      //const Color(0xffd60764);
 
   @override
   Color get backgroundColor => const Color(0xffF8F8F8);
